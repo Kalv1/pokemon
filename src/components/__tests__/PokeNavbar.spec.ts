@@ -2,7 +2,7 @@ import PokeNavbar from '@/components/PokeNavbar.vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-const link = [
+const links = [
   {
     name: 'Pokemon',
     url: '/pokemon',
@@ -16,7 +16,7 @@ describe('PokeNavbar', () => {
   })
 
   it('renders the correct link', () => {
-    const wrapper = mount(PokeNavbar, { props: { link: link } })
+    const wrapper = mount(PokeNavbar, { props: { links: links } })
     expect(wrapper.text()).toContain('Pokemon')
   })
 })
