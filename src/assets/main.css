@@ -1,1 +1,16 @@
 @import 'tailwindcss';
+
+@font-face {
+  font-family: 'Clash Display';
+  src: url('ClashDisplay-Variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('Archivo-Variable.woff2') format('woff2');
+}
+
+@theme {
+  --font-sans: 'Archivo';
+  --font-clash: 'Clash Display';
+}

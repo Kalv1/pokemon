@@ -31,10 +31,10 @@ const pokemonList = computed(() => {
 </script>
 
 <template>
-  <div class="bg-[#2A2626] min-h-[80vh] relative overflow-hidden">
+  <div class="bg-[#2A2626] h-[80vh] relative overflow-hidden">
     <img
       src="@/assets/noise.png"
-      class="absolute top-0 left-0 w-full h-full object-fill opacity-50"
+      class="absolute top-0 left-0 w-full h-full object-cover opacity-60"
     />
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -74,6 +74,18 @@ const pokemonList = computed(() => {
         </radialGradient>
       </defs>
     </svg>
+    <div class="relative z-10 container mx-auto flex flex-col-reverse md:flex-row h-full items-center justify-center">
+      <div class="text-white tracking-wide w-1/2 text-center md:text-left">
+        <h1 class=" font-clash font-bold text-3xl lg:text-6xl">POKEDEX</h1>
+        <p>
+          A Pokémon search engine, using Vue 3 / Vite / Vue Query / Tailwind CSS <br/>
+          You can find the source code of the application available on github: <br> <a href="https://github.com/Kalv1/pokemon" class="">Github</a>
+        </p>
+      </div>
+      <div class="w-1/2 flex justify-center mb-15 md:mb-0">
+        <img class="w-full md:w-2/3" src="@/assets/pokedex.png"/>
+      </div>
+    </div>
   </div>
   <div class="relative">
     <div
