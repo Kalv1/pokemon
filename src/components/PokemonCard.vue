@@ -21,7 +21,7 @@ const pokemonTypes = computed(() => {
 </script>
 
 <template>
-    <div class="bg-gray-100 flex flex-col justify-center items-center rounded-md p-4 overflow-hidden">
+    <div class="bg-gray-100 flex flex-col justify-center items-center rounded-md p-4 overflow-hidden card-pokemon">
         <p>{{ name }}</p>
         <p v-for="type in pokemonTypes" :key="type">{{ type }}</p>
         <img v-if="!isPending" :src="pokemon.sprites.front_default" />

@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import PokemonCard from '@/components/PokemonCard.vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const {
   data: pokemons,
@@ -21,12 +25,34 @@ const {
   refetchOnWindowFocus: false,
 })
 
+const pcontainer = ref<HTMLDivElement>()
+
+onMounted(() => {
+  ScrollTrigger.create({
+    trigger: pcontainer.value,
+    start: 'bottom bottom',
+    markers: true,
+    onEnter: () => {
+      if(hasNextPage.value) {
+        fetchNextPage()
+      }
+    }
+  })
+})
+
 const pokemonList = computed(() => {
   const pages = pokemons.value?.pages
 
   const pagesResult = pages?.map((page) => page.results)
 
   return pagesResult?.flat()
+})
+
+watch(pokemonList, () => {
+  // Approximate delay to refetch all pokémons data after a new page is loaded
+  setTimeout(() => {
+    ScrollTrigger.refresh()
+  }, 500)
 })
 </script>
 
@@ -112,9 +138,8 @@ const pokemonList = computed(() => {
     </div>
   </div>
   <template v-if="!isPending && !isError">
-    <div class="container mx-auto grid grid-cols-3 lg:grid-cols-4 mt-12 gap-4">
+    <div ref="pcontainer" class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-12 gap-4">
       <pokemon-card v-for="pokemon in pokemonList" :key="pokemon.id" :name="pokemon.name" />
-      <button v-if="hasNextPage" @click="fetchNextPage()">Load more</button>
     </div>
   </template>
   <template v-else> Loading... </template>
