@@ -31,7 +31,6 @@ onMounted(() => {
   ScrollTrigger.create({
     trigger: pcontainer.value,
     start: 'bottom bottom',
-    markers: true,
     onEnter: () => {
       if(hasNextPage.value) {
         fetchNextPage()
