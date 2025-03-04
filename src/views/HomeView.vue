@@ -1,34 +1,19 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useInfiniteQuery } from '@tanstack/vue-query'
 import PokemonCard from '@/components/PokemonCard.vue'
-import gsap from 'gsap'
+import { usePokeInfiniteQuery } from '@/composables/usePokeInfiniteQuery'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { usePokeQuery } from '@/composables/usePokeQuery'
 
-gsap.registerPlugin(ScrollTrigger)
 
-const {
-  data: pokemons,
-  fetchNextPage,
-  hasNextPage,
-  isError,
-  isPending,
-} = useInfiniteQuery({
-  queryKey: ['pokemons'],
-  queryFn: async ({ pageParam }) => {
-    const response = await fetch(pageParam)
-    const data = await response.json()
-    return data
-  },
-  initialPageParam: 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=20',
-  getNextPageParam: (lastPage) => lastPage.next,
-  refetchOnWindowFocus: false,
-})
+const { isSearch, onSearch, searchResult } = usePokeQuery()
+const { data: pokemons, fetchNextPage, hasNextPage, isError, isPending } = usePokeInfiniteQuery(isSearch.value)
 
 const pokemonList = computed(() => {
   const pages = pokemons.value?.pages
   const pagesResult = pages?.map((page) => page.results)
-  return pagesResult?.flat()
+
+  return isSearch.value ? searchResult.value ? searchResult.value : [] : pagesResult?.flat()
 })
 
 // Scroll trigger part :
@@ -121,6 +106,7 @@ watch(pcontainer, (value) => {
           </svg>
         </button>
         <input
+          @input="onSearch"
           placeholder="Name or pokedex number"
           class="w-full placeholder:text-gray-400 p-2 outline-none"
         />
@@ -134,7 +120,7 @@ watch(pcontainer, (value) => {
     </div>
   </div>
   <template v-if="!isPending && !isError">
-    <div ref="pcontainer" class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-12 gap-4">
+    <div ref="pcontainer" class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-12 gap-4 pb-5">
       <pokemon-card v-for="pokemon in pokemonList" :key="pokemon.id" :name="pokemon.name" />
     </div>
   </template>

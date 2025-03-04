@@ -13,6 +13,8 @@ const { data: pokemon, isPending } = useQuery({
         const data = await response.json()
         return data
     },
+    retryOnMount: false,
+    refetchOnWindowFocus: false
 })
 
 const pokemonTypes = computed(() => {
