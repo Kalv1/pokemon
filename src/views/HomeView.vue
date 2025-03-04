@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useInfiniteQuery } from '@tanstack/vue-query'
 import PokemonCard from '@/components/PokemonCard.vue'
 import gsap from 'gsap'
@@ -25,34 +25,31 @@ const {
   refetchOnWindowFocus: false,
 })
 
-const pcontainer = ref<HTMLDivElement>()
-
-onMounted(() => {
-  ScrollTrigger.create({
-    trigger: pcontainer.value,
-    start: 'bottom bottom',
-    onEnter: () => {
-      if(hasNextPage.value) {
-        fetchNextPage()
-      }
-    }
-  })
-})
-
 const pokemonList = computed(() => {
   const pages = pokemons.value?.pages
-
   const pagesResult = pages?.map((page) => page.results)
-
   return pagesResult?.flat()
 })
 
-watch(pokemonList, () => {
-  // Approximate delay to refetch all pokémons data after a new page is loaded
-  setTimeout(() => {
-    ScrollTrigger.refresh()
-  }, 500)
+// Scroll trigger part :
+const pcontainer = ref<HTMLDivElement>()
+
+watch(pcontainer, (value) => {
+  if(value) {
+    ScrollTrigger.create({
+      trigger: pcontainer.value,
+      start: 'bottom bottom',
+      onEnter: async () => {
+        if(hasNextPage.value) {
+          await fetchNextPage()
+          ScrollTrigger.refresh()
+        }
+      },
+    })
+  }
 })
+
+
 </script>
 
 <template>
