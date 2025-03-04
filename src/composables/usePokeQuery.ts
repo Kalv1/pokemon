@@ -10,7 +10,6 @@ export const usePokeQuery = () => {
 
   const onSearch = async (event: Event) => {
     const target = event.target as HTMLInputElement
-
     const searchValue = target?.value
 
     if (!searchValue) {
@@ -25,7 +24,6 @@ export const usePokeQuery = () => {
     }
 
     isDelay.value = setTimeout(() => {
-      console.log('search')
       search(searchValue)
     }, 500)
   }

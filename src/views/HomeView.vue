@@ -96,7 +96,7 @@ watch(pcontainer, (value) => {
   </div>
   <div class="relative">
     <div
-        class="w-5/6 md:w-2/3 p-2 absolute top-0 left-[50%] -translate-y-[50%] -translate-x-[50%] bg-white rounded-md border-2 border-[#2A2626] flex items-center "
+        class="w-5/6 md:w-2/3 px-2 absolute top-0 left-[50%] -translate-y-[50%] -translate-x-[50%] bg-white rounded-md border-2 border-[#2A2626] flex items-center "
       >
         <button>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-8 fill-gray-400" viewBox="0 0 24 24">
@@ -108,15 +108,8 @@ watch(pcontainer, (value) => {
         <input
           @input="onSearch"
           placeholder="Name or pokedex number"
-          class="w-full placeholder:text-gray-400 p-2 outline-none"
+          class="w-full placeholder:text-gray-400 p-2 py-4 outline-none"
         />
-        <button class="p-2 bg-black rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 fill-white" viewBox="0 0 16 16">
-            <path
-              d="M6 9.5A2 2 0 0 1 7.937 11H13.5a.5.5 0 0 1 .09.992L13.5 12l-5.563.001a2 2 0 0 1-3.874 0L2.5 12a.5.5 0 0 1-.09-.992L2.5 11h1.563A2 2 0 0 1 6 9.5m0 1a1 1 0 1 0 0 2a1 1 0 0 0 0-2m4-8A2 2 0 0 1 11.937 4H13.5a.5.5 0 0 1 .09.992L13.5 5l-1.563.001a2 2 0 0 1-3.874 0L2.5 5a.5.5 0 0 1-.09-.992L2.5 4h5.563A2 2 0 0 1 10 2.5m0 1a1 1 0 1 0 0 2a1 1 0 0 0 0-2"
-            />
-          </svg>
-        </button>
     </div>
   </div>
   <template v-if="!isPending && !isError">

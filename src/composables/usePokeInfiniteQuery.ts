@@ -10,9 +10,8 @@ export const usePokeInfiniteQuery = (isSearch: boolean) => {
     },
     initialPageParam: 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=20',
     getNextPageParam: (lastPage) => lastPage.next,
-    refetchOnWindowFocus: false,
     enabled: !isSearch,
-    retryOnMount: false,
+    staleTime: Infinity,
   })
 
   return {

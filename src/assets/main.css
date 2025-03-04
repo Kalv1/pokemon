@@ -10,7 +10,13 @@
   src: url('Archivo-Variable.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'PKMN';
+  src: url('PKMN.ttf') format('truetype');
+}
+
 @theme {
   --font-sans: 'Archivo';
   --font-clash: 'Clash Display';
+  --font-pkmn: 'PKMN';
 }
