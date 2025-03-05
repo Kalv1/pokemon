@@ -37,10 +37,15 @@ const idfy = computed(() => {
 </script>
 
 <template>
-    <div v-if="!isPending" class="bg-gray-100 flex flex-col justify-center items-center rounded-md p-4 overflow-hidden card-pokemon font-pkmn">
-        <TypeDetails :types="pokemonTypes" /> 
+    <div v-if="!isPending" class="bg-gray-100 border border-gray-300 flex flex-col justify-center items-center rounded-md pb-4 overflow-hidden font-pkmn">
+        <div class="flex justify-between w-full pr-4">
+            <div class="self-start bg-white px-4 py-2 rounded-br-lg border-b border-r border-gray-300">
+                <p>#{{ idfy }}</p>
+            </div>
+            <TypeDetails :types="pokemonTypes" /> 
+        </div>
+
         <img :src="pokemon.sprites.front_default" />
-        <p>{{ name }}</p>
-        <p>#{{ idfy }}</p>
+        <p class="capitalize">{{ name }}</p>
     </div>
 </template>

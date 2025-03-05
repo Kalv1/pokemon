@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue'
+import { computed, ref, watch, onMounted, nextTick } from 'vue'
 import PokemonCard from '@/components/PokemonCard.vue'
 import { usePokeInfiniteQuery } from '@/composables/usePokeInfiniteQuery'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -115,10 +115,9 @@ watch(pokemonList, () => {
         />
     </div>
   </div>
-  <template v-if="!isPending && !isError">
+  <div v-show="!isPending && !isError">
     <div ref="pcontainer" class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-12 gap-4 pb-5">
       <pokemon-card v-for="pokemon in pokemonList" :key="pokemon.id" :name="pokemon.name" />
     </div>
-  </template>
-  <template v-else> Loading... </template>
+  </div>
 </template>

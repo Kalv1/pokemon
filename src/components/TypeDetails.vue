@@ -1,25 +1,12 @@
 <script setup lang="ts">
-import { useQueries } from '@tanstack/vue-query';
 import { computed } from 'vue'
+import { useTypeQuery } from '@/composables/useTypeQuery'
 
 const props = defineProps<{
     types: string[]
 }>()
 
-
-const fetchType = async (type: string) => {
-    const response = await fetch(`https://pokeapi.co/api/v2/type/${type}`)
-    const data = await response.json()
-    return data
-}
-
-const results = useQueries({
-  queries: props.types.map((type) => ({
-    queryKey: ['type', type],
-    queryFn: () => fetchType(type),
-    staleTime: Infinity,
-  })),
-})
+const { results } = useTypeQuery(props.types)
 
 const isPending = computed(() => results.value.some(query => query.isPending))
 
