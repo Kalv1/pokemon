@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import PokemonCard from '@/components/PokemonCard.vue'
 import { usePokeInfiniteQuery } from '@/composables/usePokeInfiniteQuery'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -16,24 +16,27 @@ const pokemonList = computed(() => {
   return isSearch.value ? searchResult.value ? searchResult.value : [] : pagesResult?.flat()
 })
 
-// Scroll trigger part :
 const pcontainer = ref<HTMLDivElement>()
 
-watch(pcontainer, (value) => {
-  if(value) {
-    ScrollTrigger.create({
-      trigger: pcontainer.value,
-      start: 'bottom bottom',
-      onEnter: async () => {
-        if(hasNextPage.value) {
-          await fetchNextPage()
-          ScrollTrigger.refresh()
-        }
-      },
-    })
-  }
+onMounted(() => {
+  ScrollTrigger.create({
+    trigger: pcontainer.value,
+    start: 'bottom bottom',
+    onEnter: () => {
+      if(hasNextPage.value) {
+        fetchNextPage()
+      }
+    }
+  })
 })
 
+// Scroll trigger part :
+watch(pokemonList, () => {
+  // Approximate delay to refetch all pokémons data after a new page is loaded
+  setTimeout(() => {
+    ScrollTrigger.refresh()
+  }, 300)
+})
 
 </script>
 
