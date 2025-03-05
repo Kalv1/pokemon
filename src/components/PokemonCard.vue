@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useQuery, QueryClient } from '@tanstack/vue-query';
-import { computed, watch } from 'vue';
-
-const queryClient = new QueryClient()
+import TypeDetails from '@/components/TypeDetails.vue'
+import { useQuery } from '@tanstack/vue-query';
+import { computed } from 'vue';
 
 const props = defineProps<{
     name: string
@@ -39,7 +38,7 @@ const idfy = computed(() => {
 
 <template>
     <div v-if="!isPending" class="bg-gray-100 flex flex-col justify-center items-center rounded-md p-4 overflow-hidden card-pokemon font-pkmn">
-        <p v-for="type in pokemonTypes" :key="type">{{ type }}</p>
+        <TypeDetails :types="pokemonTypes" /> 
         <img :src="pokemon.sprites.front_default" />
         <p>{{ name }}</p>
         <p>#{{ idfy }}</p>

@@ -35,7 +35,7 @@ watch(pokemonList, () => {
   // Approximate delay to refetch all pokémons data after a new page is loaded
   setTimeout(() => {
     ScrollTrigger.refresh()
-  }, 300)
+  }, 500)
 })
 
 </script>
