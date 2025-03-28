@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, nextTick } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import PokemonCard from '@/components/PokemonCard.vue'
 import { usePokeInfiniteQuery } from '@/composables/usePokeInfiniteQuery'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -8,6 +8,8 @@ import { usePokeQuery } from '@/composables/usePokeQuery'
 
 const { isSearch, onSearch, searchResult } = usePokeQuery()
 const { data: pokemons, fetchNextPage, hasNextPage, isError, isPending } = usePokeInfiniteQuery(isSearch.value)
+const fetchNextPageAmount = ref(0)
+
 
 const pokemonList = computed(() => {
   const pages = pokemons.value?.pages
@@ -16,28 +18,27 @@ const pokemonList = computed(() => {
   return isSearch.value ? searchResult.value ? searchResult.value : [] : pagesResult?.flat()
 })
 
+
 const pcontainer = ref<HTMLDivElement>()
 
-onMounted(() => {
+
+
+watch(isPending, () => {
   ScrollTrigger.create({
     trigger: pcontainer.value,
-    start: 'bottom bottom',
-    onEnter: () => {
+    start: "bottom bottom",
+    onEnter: async () => {
       if(hasNextPage.value) {
-        fetchNextPage()
+        await fetchNextPage()
+        fetchNextPageAmount.value++
       }
     }
   })
-})
+});
 
-// Scroll trigger part :
-watch(pokemonList, () => {
-  // Approximate delay to refetch all pokémons data after a new page is loaded
-  setTimeout(() => {
-    ScrollTrigger.refresh()
-  }, 500)
+watch(fetchNextPageAmount, () => {
+  ScrollTrigger.refresh()
 })
-
 </script>
 
 <template>
@@ -115,8 +116,8 @@ watch(pokemonList, () => {
         />
     </div>
   </div>
-  <div v-show="!isPending && !isError">
-    <div ref="pcontainer" class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-12 gap-4 pb-5">
+  <div ref="pcontainer">
+    <div v-if="!isPending && !isError" class="container mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-12 gap-4 pb-5 min-h-100vh">
       <pokemon-card v-for="pokemon in pokemonList" :key="pokemon.id" :name="pokemon.name" />
     </div>
   </div>
